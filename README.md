@@ -1,3 +1,8 @@
+# Assignment solution using React, Axios.
+
+Assignment page: description of the assignment
+Shipments Table: the solution (in progress)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
