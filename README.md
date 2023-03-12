@@ -1,7 +1,17 @@
 # Assignment solution using React, Axios.
 
+## shipments-fr
 Assignment page: description of the assignment
 Shipments Table: the solution (in progress)
+
+## shipments-server
+Basic backend to get, delete and update shipments.
+
+# Start
+Install dependencies
+shipments-server -> npm start 
+shipments-fr -> npm start
+
 
 # Getting Started with Create React App
 
