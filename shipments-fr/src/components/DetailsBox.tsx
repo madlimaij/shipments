@@ -1,27 +1,27 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Row } from 'react-table';
-import { updateShipment } from '../services/api';
 import { capFirstLetter } from '../utils/helpers';
-import { dRow } from './Table';
+import { Shipment, useShipments } from '../views/ShipmentsProvider';
 
 type DetailsBoxProps = {
-  row: Row<dRow>;
+  row: Row<Shipment>;
   onClose: () => void;
 };
 
 const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
+  const {/*  error, */ updateShipments } = useShipments();
+
   const {
     register,
-    formState: { errors },
+    formState: { errors }, // @Todo: validation!
     handleSubmit,
-  } = useForm();
+  } = useForm<Shipment>();
 
-  const onSubmit = (data: any, e: any) => { //@Todo: Test it!
-    //Todo:any!!
-    updateShipment(row.original.orderNo, data);
-    console.log(e, data, 'e and data');
+  const onSubmit = (data: Shipment) => {
+    updateShipments(row.original.orderNo, data);
+    onClose();
   };
 
   return (
@@ -31,20 +31,31 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
           <Modal.Title>Shipment details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {/* {error && <Alert variant={'warning'}>Something went wrong...</Alert>} */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            {row.cells.map((cell) => (
-              <div className="mb-3" key={`${cell.column.id}-${row.id}`}>
-                <label htmlFor={cell.value} className="form-label">
-                  {capFirstLetter(cell.column.id)}
-                </label>
-                <input
-                  id={cell.value}
-                  className="form-control"
-                  defaultValue={cell.value}
-                  {...register}
-                ></input>
-              </div>
-            ))}
+            {row.cells.map((cell) => {
+              return (
+                <div className="mb-3" key={`${cell.column.id}-${row.id}`}>
+                  <label htmlFor={cell.value} className="form-label">
+                    {capFirstLetter(cell.column.id)}
+                  </label>
+                  <input
+                    id={cell.value}
+                    className="form-control"
+                    defaultValue={cell.value}
+                    {...register(
+                      cell.column.id as
+                        | 'consignee'
+                        | 'customer'
+                        | 'date'
+                        | 'orderNo'
+                        | 'status'
+                        | 'trackingNo'
+                    )}
+                  ></input>
+                </div>
+              );
+            })}
             <Modal.Footer>
               <Button variant="secondary" onClick={onClose}>
                 Close
@@ -61,8 +72,6 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
 };
 
 export default DetailsBox;
-
-
 
 //Draft
 /*     <div

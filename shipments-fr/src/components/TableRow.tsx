@@ -1,15 +1,17 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { Row } from 'react-table';
+import { Shipment, useShipments } from '../views/ShipmentsProvider';
 import DetailsBox from './DetailsBox';
-import { dRow } from './Table';
+import ModalComponent from './ModalComponent';
 
 type TableRowProps = {
-  row: Row<dRow>;
-  removeRow: MouseEventHandler<HTMLButtonElement>;
+  row: Row<Shipment>;
 };
 
-export const TableRow: React.FC<TableRowProps> = ({ row, removeRow }) => {
+export const TableRow: React.FC<TableRowProps> = ({ row }) => {
+  const [showConfirmPropmt, setShowConfirmPropmt] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const { deleteShipment } = useShipments();
 
   const handleDetailView = () => {
     setShowDetails(true);
@@ -19,14 +21,24 @@ export const TableRow: React.FC<TableRowProps> = ({ row, removeRow }) => {
     setShowDetails(false);
   };
 
-  console.log(showDetails, 'tablerow row');
-
   return (
     <>
+      {showConfirmPropmt && (
+        <ModalComponent
+          modalTitle={'Delete shipment'}
+          secondButton={'Yes'}
+          onConfirm={() => {
+            deleteShipment(row.original.orderNo);
+            setShowConfirmPropmt(false);
+          }}
+          onClose={() => setShowConfirmPropmt(false)}
+        >
+          Are You sure You want to delete this shipment?
+        </ModalComponent>
+      )}
       <tr {...row.getRowProps()}>
         {row.cells.map((cell) => (
           <td {...cell.getCellProps()} key={`${cell.column.id}-${row.id}`}>
-            {/* id??? */}
             {cell.render('Cell')}
           </td>
         ))}
@@ -39,7 +51,12 @@ export const TableRow: React.FC<TableRowProps> = ({ row, removeRow }) => {
             >
               Details
             </button>
-            <button onClick={removeRow} className="btn btn-dark btn-sm">
+            <button
+              onClick={() => {
+                setShowConfirmPropmt(true);
+              }}
+              className="btn btn-dark btn-sm"
+            >
               X
             </button>
           </div>
