@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { dRow } from '../components/Table';
-
+import { Shipment } from '../views/ShipmentsProvider';
 
 const apiEndpoint = 'http://localhost:3000/shipments';
 
@@ -11,27 +10,29 @@ export const fetchData = async () => {
     const data = result.data;
     if (result.status === 200) {
       return data;
+    } else {
+      console.log(result.status);
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const deleteRow = async ( id: string ) => {
+export const deleteRow = async (id: string) => {
   console.log(id);
   try {
-    const result = await axios.delete(
-      `${apiEndpoint}/?orderNo=${id}`
-    );
+    const result = await axios.delete(`${apiEndpoint}/${id}`);
+    console.log(result.status);
     return result.status;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateShipment = async (id:string, data:dRow) => {
+export const updateShipment = async (id: string, data: Shipment) => {
   try {
-    const response = await axios.put(`${apiEndpoint}/?orderNo=${id}`, JSON.stringify(data));
+    const response = await axios.put(`${apiEndpoint}/${id}`, data);
+    console.log(data, 'resp:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error updating shipment:', error);

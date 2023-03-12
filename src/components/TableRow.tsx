@@ -1,10 +1,10 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { Row } from 'react-table';
+import { Shipment } from '../views/ShipmentsProvider';
 import DetailsBox from './DetailsBox';
-import { dRow } from './Table';
 
 type TableRowProps = {
-  row: Row<dRow>;
+  row: Row<Shipment>;
   removeRow: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -18,8 +18,6 @@ export const TableRow: React.FC<TableRowProps> = ({ row, removeRow }) => {
   const handleModalClose = () => {
     setShowDetails(false);
   };
-
-  console.log(showDetails, 'tablerow row');
 
   return (
     <>
