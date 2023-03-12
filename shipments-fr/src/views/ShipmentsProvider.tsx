@@ -17,14 +17,17 @@ type ShipmentsState = {
   //   addShipment: (shipment: Shipment) => void;
   updateShipments: (orderNo: string, updatedShipment: Shipment) => void;
   deleteShipment: (orderNo: string) => void;
+  setError: React.Dispatch<React.SetStateAction<boolean>>;
+  error: boolean;
 };
 
-// Define the context object for managing shipments state
 const ShipmentsContext = createContext<ShipmentsState>({
   shipments: [],
   //   addShipment: () => {},
   updateShipments: () => {},
   deleteShipment: () => {},
+  setError: () => {},
+  error: false,
 });
 
 type ShipmentsProviderProps = {
@@ -34,15 +37,18 @@ type ShipmentsProviderProps = {
 export const ShipmentsProvider: React.FC<ShipmentsProviderProps> = ({
   children,
 }) => {
-  // Define the state for shipments
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffectAsync(async () => {
-    const shipmentsData = await fetchData();
-    setShipments(shipmentsData);
-    setIsLoading(false);
-    console.log(shipmentsData);
+    const response = await fetchData();
+    if (response && response.status === 200) {
+      setShipments(response.data);
+      setIsLoading(false);
+    } else {
+      setError(true);
+    }
   }, []);
 
   /*   const addShipment = (shipment: Shipment) => {
@@ -50,40 +56,43 @@ export const ShipmentsProvider: React.FC<ShipmentsProviderProps> = ({
   };
  */
 
-  // Update an existing shipment in the state
-  const updateShipments = (orderNo: string, updatedShipment: Shipment) => {
+  const updateShipments = async (
+    orderNo: string,
+    updatedShipment: Shipment
+  ) => {
     const shipmentsCopy = [...shipments];
-    setShipments(
-      shipmentsCopy.map((shipment) =>
-        shipment.orderNo === orderNo
-          ? { ...shipment, ...updatedShipment }
-          : shipment
-      )
-    );
-    updateShipment(orderNo, updatedShipment); //@Todo: use status; in case of error, don't update!
+    const newShipment = { ...shipments, ...updatedShipment }; //merging the key-value pairs of both objects into a new objec
+    const response = await updateShipment(orderNo, newShipment);
+    if (response && response.status === 200) {
+      setShipments(
+        shipmentsCopy.map((shipment) =>
+          shipment.orderNo === orderNo ? newShipment : shipment
+        )
+      );
+    } else setError(true);
   };
 
-  // Delete a shipment from the state
-
-  const deleteShipment = (id: string) => {
-    deleteRow(id);
-    const shipmentsCopy = [...shipments];
-    setShipments(shipmentsCopy.filter((row) => row.orderNo !== id));
+  const deleteShipment = async (id: string) => {
+    const response = await deleteRow(id);
+    if (response && response.status === 200) {
+      const shipmentsCopy = [...shipments];
+      setShipments(shipmentsCopy.filter((row) => row.orderNo !== id));
+    } else setError(true);
   };
 
-  // Define the context value that will be passed down to all children components
   const contextValue: ShipmentsState = {
     shipments,
     // addShipment,
     updateShipments,
     deleteShipment,
+    setError,
+    error,
   };
 
-  // Return the provider component with the context value
   return (
     <ShipmentsContext.Provider value={contextValue}>
       {isLoading ? (
-        <div className="mt-5 pt-5 d-flex justify-content-center align-items-center">
+        <div className="mt-5 pt-5 d-flex justify-content-center">
           <Spinner animation="grow" role="status" />
         </div>
       ) : (

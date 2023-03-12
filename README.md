@@ -1,4 +1,4 @@
-# Assignment solution using React, Axios.
+# Assignment solution using React (React Table, Router, Form), Axios & Bootstrap.
 
 ## shipments-fr
 Assignment page: description of the assignment
@@ -13,6 +13,9 @@ shipments-server -> npm start
 shipments-fr -> npm start
 
 
+
+
+----------------
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

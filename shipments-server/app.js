@@ -27,7 +27,7 @@ app.get('/shipments/:orderNo', (req, res) => {
   }
 });
 
-// DELETE endpoint to delete a single shipment object by ID
+// DELETE endpoint to delete a single shipment object by ID (orderNo)
 app.delete('/shipments/:orderNo', (req, res) => {
   const { orderNo } = req.params;
   const index = shipments.findIndex((d) => d.orderNo === orderNo);
@@ -36,7 +36,7 @@ app.delete('/shipments/:orderNo', (req, res) => {
     res.status(404).send('Shipment not found');
   } else {
     shipments.splice(index, 1);
-    res.sendStatus(204);
+    res.sendStatus(200);
   }
 });
 
@@ -44,13 +44,11 @@ app.delete('/shipments/:orderNo', (req, res) => {
 app.put('/shipments/:orderNo', (req, res) => {
   const { orderNo } = req.params;
   const shipment = shipments.find((d) => d.orderNo === orderNo);
-  console.log('bef', shipment, 'req', req.body);
   if (!shipment) {
     res.status(404).send('Shipment not found');
   } else {
     // Update shipment object with request body data
     Object.assign(shipment, req.body);
-    console.log('aft', shipment);
     fs.writeFile('shipments.json', JSON.stringify(shipments), (err) => {
       if (err) {
         console.error(err);

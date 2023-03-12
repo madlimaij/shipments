@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import React from 'react';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { FieldValues } from 'react-hook-form/dist/types';
-import { Row, useRowState } from 'react-table';
-import { updateShipment } from '../services/api';
+import { Row } from 'react-table';
 import { capFirstLetter } from '../utils/helpers';
 import { Shipment, useShipments } from '../views/ShipmentsProvider';
 
@@ -13,11 +11,11 @@ type DetailsBoxProps = {
 };
 
 const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
-  const { updateShipments } = useShipments();
+  const {/*  error, */ updateShipments } = useShipments();
 
   const {
     register,
-    formState: { errors },
+    formState: { errors }, // @Todo: validation!
     handleSubmit,
   } = useForm<Shipment>();
 
@@ -33,9 +31,9 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
           <Modal.Title>Shipment details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {/* {error && <Alert variant={'warning'}>Something went wrong...</Alert>} */}
           <form onSubmit={handleSubmit(onSubmit)}>
             {row.cells.map((cell) => {
-              console.log(cell.column.id);
               return (
                 <div className="mb-3" key={`${cell.column.id}-${row.id}`}>
                   <label htmlFor={cell.value} className="form-label">

@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
+import { Alert } from 'react-bootstrap';
 import { Row, usePagination, useTable } from 'react-table';
 import { Shipment, useShipments } from '../views/ShipmentsProvider';
 import PageNav from './PageNav';
-import './table.css';
 import { TableRow } from './TableRow';
 
 const Table: React.FC = () => {
-  const { shipments, deleteShipment } = useShipments();
-  console.log(shipments);
+  const { error, shipments, setError } = useShipments();
 
   const columns = useMemo(() => {
     return Object.keys(shipments[0]).map((header) => ({
@@ -44,6 +43,11 @@ const Table: React.FC = () => {
 
   return (
     <>
+      {error && (
+        <Alert variant={'warning'} onBlur={() => setError(false)}> {/* @Todo:check! */}
+          Something went wrong...
+        </Alert>
+      )}
       {shipments.length > 0 ? (
         <div className="table-responsive">
           <table {...getTableProps} className="table">
@@ -62,13 +66,7 @@ const Table: React.FC = () => {
             <tbody {...getTableBodyProps()}>
               {page.map((row: Row<Shipment>) => {
                 prepareRow(row);
-                return (
-                  <TableRow
-                    row={row}
-                    removeRow={() => deleteShipment(row.original.orderNo)}
-                    key={row.original.orderNo}
-                  />
-                ); //change id?
+                return <TableRow row={row} key={row.original.orderNo} />;
               })}
             </tbody>
           </table>
