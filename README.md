@@ -1,18 +1,19 @@
 # Assignment solution using React (React Table, Router, Form), Axios & Bootstrap.
 
 ## shipments-fr
-### Assignment page: 
-  - description of the assignment
-### Shipments Table: 
+Assignment page: 
+  - description of the assignment\
+
+Shipments Table: 
   - the solution (in progress)
 
 ## shipments-server
 Basic backend to get, delete and update shipments.
 
 # Start
-- Install dependencies \
-- shipments-server -> npm start \
-- shipments-fr -> npm start \
+- Install dependencies
+- shipments-server -> npm start
+- shipments-fr -> npm start
 
 
 
