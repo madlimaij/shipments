@@ -8,14 +8,7 @@ const Home = () => {
       <h6>Create an HTML Page with relevant Javascript to: </h6>
       <ul>
         <li>
-          Load shipments data with AJAX from{' '}
-          <a href="https://my.api.mockaroo.com/shipments.json?key=5e0b62d0">
-            https://my.api.mockaroo.com/shipments.json?key=5e0b62d0
-          </a><br/>
-          <i>
-            (The link might get overloaded, you can also use
-            offline version renaming shipment.txt file)
-          </i>
+          Load shipments data with AJAX.<br/>
         </li>
         <li>
           Display data in generated table (see attachment ShipmentsTable.png as

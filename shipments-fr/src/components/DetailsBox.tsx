@@ -11,7 +11,7 @@ type DetailsBoxProps = {
 };
 
 const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
-  const {/*  error, */ updateShipments } = useShipments();
+  const {  error, updateShipments } = useShipments();
 
   const {
     register,
@@ -31,7 +31,7 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
           <Modal.Title>Shipment details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* {error && <Alert variant={'warning'}>Something went wrong...</Alert>} */}
+          {error && <Alert variant={'warning'}>Something went wrong...</Alert>}
           <form onSubmit={handleSubmit(onSubmit)}>
             {row.cells.map((cell) => {
               return (
