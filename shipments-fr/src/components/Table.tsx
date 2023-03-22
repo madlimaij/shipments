@@ -8,6 +8,7 @@ import { TableRow } from './TableRow';
 const Table: React.FC = () => {
   const { error, shipments, setError } = useShipments();
 
+  // Should put columns and tableData to parent component
   const columns = useMemo(() => {
     return Object.keys(shipments[0]).map((header) => ({
       header: header.toUpperCase(),
@@ -15,7 +16,7 @@ const Table: React.FC = () => {
     }));
   }, [shipments]);
 
-  const tableData = useMemo(() => shipments, [shipments]);
+  const tableData = useMemo(() => shipments, [shipments]);  
 
   const {
     getTableProps,
@@ -43,12 +44,8 @@ const Table: React.FC = () => {
 
   return (
     <>
-      {error && (
-        <Alert variant={'warning'} onBlur={() => setError(false)}> {/* @Todo:check! */}
-          Something went wrong...
-        </Alert>
-      )}
-      {shipments.length > 0 ? (
+      {error && <Alert variant={'warning'}>Something went wrong...</Alert>}
+      {shipments ? (
         <div className="table-responsive">
           <table {...getTableProps} className="table">
             <thead>

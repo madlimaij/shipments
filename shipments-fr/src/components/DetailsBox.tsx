@@ -11,7 +11,7 @@ type DetailsBoxProps = {
 };
 
 const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
-  const {  error, updateShipments } = useShipments();
+  const { error, updateShipments } = useShipments();
 
   const {
     register,
@@ -41,6 +41,7 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
                   </label>
                   <input
                     id={cell.value}
+                    readOnly={cell.column.id === "orderNo" && true}
                     className="form-control"
                     defaultValue={cell.value}
                     {...register(
@@ -73,60 +74,3 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({ row, onClose }) => {
 
 export default DetailsBox;
 
-//Draft
-/*     <div
-      className="modal fade show"
-      id="staticBackdrop"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabIndex={-1}
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="false"
-    >
-      <div className="modal-dialog modal-lg">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="staticBackdropLabel">
-              Shipment details
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-            //   data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={()=>onClose}
-            />
-          </div>
-          <div className="modal-body">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {row.cells.map((cell) => (
-                <div className="mb-3" key={`${cell.column.id}-${row.id}`}>
-                  <label htmlFor={cell.value} className="form-label">
-                    {capFirstLetter(cell.column.id)}
-                  </label>
-                  <input
-                    id={cell.value}
-                    className="form-control"
-                    defaultValue={cell.value}
-                    {...register}
-                  ></input>
-                </div>
-              ))}
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                //   data-bs-dismiss="modal"
-                  onClick={()=>onClose}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div> */
