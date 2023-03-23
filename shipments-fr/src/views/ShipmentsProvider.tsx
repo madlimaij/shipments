@@ -21,6 +21,11 @@ type ShipmentsState = {
   error: boolean;
 };
 
+type ShipmentsProviderProps = {
+  children: ReactNode;
+};
+
+//Creating context with default values
 const ShipmentsContext = createContext<ShipmentsState>({
   shipments: [],
   //   addShipment: () => {},
@@ -29,10 +34,6 @@ const ShipmentsContext = createContext<ShipmentsState>({
   setError: () => {},
   error: false,
 });
-
-type ShipmentsProviderProps = {
-  children: ReactNode;
-};
 
 export const ShipmentsProvider: React.FC<ShipmentsProviderProps> = ({
   children,
@@ -60,12 +61,12 @@ export const ShipmentsProvider: React.FC<ShipmentsProviderProps> = ({
     orderNo: string,
     updatedShipment: Shipment
   ) => {
-    const shipmentsCopy = [...shipments];
-    const newShipment = { ...shipments, ...updatedShipment }; //merging the key-value pairs of both objects into a new objec
+    const shipmentToUpdate = shipments.find(shipment => shipment.orderNo === orderNo)
+    const newShipment = { ...shipmentToUpdate, ...updatedShipment }; //merging the key-value pairs of both objects into a new object
     const response = await updateShipment(orderNo, newShipment);
     if (response && response.status === 200) {
       setShipments(
-        shipmentsCopy.map((shipment) =>
+        [...shipments].map((shipment) =>
           shipment.orderNo === orderNo ? newShipment : shipment
         )
       );
@@ -75,8 +76,7 @@ export const ShipmentsProvider: React.FC<ShipmentsProviderProps> = ({
   const deleteShipment = async (id: string) => {
     const response = await deleteRow(id);
     if (response && response.status === 200) {
-      const shipmentsCopy = [...shipments];
-      setShipments(shipmentsCopy.filter((row) => row.orderNo !== id));
+      setShipments([...shipments].filter((row) => row.orderNo !== id));
     } else setError(true);
   };
 

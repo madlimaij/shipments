@@ -5,10 +5,10 @@ Assignment page:
   - description of the assignment\
 
 Shipments Table: 
-  - the solution (in progress)
+  - the solution
 
 ## shipments-server
-Basic backend to get, delete and update shipments.
+Basic backend to get, delete and update shipments (in collaboration with ChatGPT).
 
 # Start
 - Install dependencies
